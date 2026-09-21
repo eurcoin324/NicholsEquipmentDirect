@@ -1,5 +1,0 @@
-import { db } from '@/lib/db';
-export default async function Detail({params}:{params:Promise<{id:string}>}){
- const {id}=await params; const x=await db.inventory.findUnique({where:{id}});
- if(!x)return <main className="container"><h1>Equipment not found</h1></main>;
- return <main className="container"><span className="tag">{x.category}</span><h1>{x.title}</h1><p className="muted">{x.location} · {x.status.replaceAll('_',' ')}</p><p>{x.description}</p><p className="price">${(x.priceCents/100).toLocaleString()} {x.currency}</p><h3>Specifications</h3><pre style={{whiteSpace:'pre-wrap'}}>{JSON.stringify(x.specs,null,2)}</pre><form action="/api/checkout" method="post"><input type="hidden" name="inventoryId" value={x.id}/><label>Name<input className="field" name="buyerName" required/></label><label>Email<input className="field" type="email" name="buyerEmail" required/></label><label>Phone<input className="field" name="buyerPhone"/></label><label>Payment method<select className="field" name="paymentMethod"><option value="CARD">Card</option><option value="WIRE">Wire transfer</option></select></label><button className="btn">Continue to purchase</button></form></main>}
